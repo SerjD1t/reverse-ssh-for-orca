@@ -1,0 +1,165 @@
+{
+  "manifestVersion": 2,
+  "id": "reverse-ssh",
+  "name": "Reverse SSH for Orca",
+  "version": "1.2.0",
+  "license": "MIT",
+  "description": "Manage a reverse SSH tunnel from Orca on Windows to your own SSH server.",
+  "engines": { "orca": ">=1.4.272" },
+  "execution": "trusted-worker",
+  "pluginApi": 1,
+  "main": "main.mjs",
+  "capabilities": [
+    { "kind": "settings:own" },
+    { "kind": "notifications:show" }
+  ],
+  "contributes": {
+    "commands": [
+      { "id": "showStatus", "title": "Reverse SSH — Show status" },
+      { "id": "restart", "title": "Reverse SSH — Restart tunnel" }
+    ],
+    "statusBarItems": [
+      {
+        "id": "tunnel",
+        "text": "SSH: starting",
+        "icon": "link",
+        "command": "showStatus"
+      }
+    ],
+    "settings": [
+      {
+        "key": "host",
+        "title": "SSH server address",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "user",
+        "title": "SSH username",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "keyPath",
+        "title": "Path to SSH identity file",
+        "description": "Enter the absolute path to your SSH identity file on the Windows host.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "knownHostsPath",
+        "title": "Path to known_hosts",
+        "description": "Leave blank to use the OpenSSH defaults. A custom file must contain your SSH server's verified host key.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "sshPath",
+        "title": "Path to ssh.exe",
+        "description": "Leave blank to use the built-in Windows OpenSSH client.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "key": "sshPort",
+        "title": "SSH server port",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535,
+        "default": 22
+      },
+      {
+        "key": "remoteHost",
+        "title": "Loopback listener on the SSH server",
+        "type": "string",
+        "enum": ["127.0.0.1", "::1", "localhost"],
+        "enumLabels": ["IPv4 (127.0.0.1)", "IPv6 (::1)", "Local hostname (localhost)"],
+        "default": "127.0.0.1"
+      },
+      {
+        "key": "remotePort",
+        "title": "Tunnel port on the SSH server",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535,
+        "default": 17680
+      },
+      {
+        "key": "localHost",
+        "title": "Orca runtime address on Windows",
+        "type": "string",
+        "default": "127.0.0.1"
+      },
+      {
+        "key": "localPort",
+        "title": "Orca runtime port on Windows",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535,
+        "default": 6768
+      },
+      {
+        "key": "autoStart",
+        "title": "Start the tunnel with Orca",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "autoReconnect",
+        "title": "Reconnect automatically after SSH failure",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "retrySeconds",
+        "title": "Initial retry delay (seconds)",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 86400,
+        "default": 2
+      },
+      {
+        "key": "maxRetrySeconds",
+        "title": "Maximum retry delay (seconds)",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 86400,
+        "default": 30
+      },
+      {
+        "key": "connectTimeoutSeconds",
+        "title": "OpenSSH connection timeout (seconds)",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 86400,
+        "default": 10
+      },
+      {
+        "key": "forwardTimeoutSeconds",
+        "title": "Forward confirmation timeout (seconds)",
+        "description": "Measured from the start of the SSH client until the server confirms that the listener is open.",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 86400,
+        "default": 30
+      },
+      {
+        "key": "keepAliveSeconds",
+        "title": "SSH keepalive interval (seconds)",
+        "description": "Set to 0 to disable SSH keepalive requests.",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 86400,
+        "default": 20
+      },
+      {
+        "key": "keepAliveMisses",
+        "title": "Maximum unanswered SSH keepalives",
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 3
+      }
+    ]
+  }
+}
